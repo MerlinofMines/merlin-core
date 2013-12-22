@@ -12,11 +12,17 @@ public abstract class AbstractCommandLibrary implements CommandLibrary {
 
 	protected Map<Command,CommandMetaData> commandMap = new HashMap<Command, CommandMetaData>();
 
+	protected CommandMetaData defaultMetaData = null;
+	
+	protected AbstractCommandLibrary(CommandMetaData defaultCommandMetaData) {
+		this.defaultMetaData = defaultCommandMetaData;
+	}
+	
 	@Override
 	public void addCommand(List<CommandPiece<?>> pattern, Command command)
 			throws Exception {
 		
-		CommandMetaData metaData = new CommandMetaData();
+		CommandMetaData metaData = defaultMetaData.clone();
 		metaData.setCommandPattern(pattern);
 		addCommand(metaData,command);
 	}
@@ -31,4 +37,15 @@ public abstract class AbstractCommandLibrary implements CommandLibrary {
 	public void removeCommand(Command command) throws Exception {
 		commandMap.remove(command);
 	}
+
+	public CommandMetaData getDefaultMetaData() {
+		return defaultMetaData;
+	}
+
+	public void setDefaultMetaData(CommandMetaData defaultMetaData) {
+		this.defaultMetaData = defaultMetaData;
+	}
+
+	
+
 }

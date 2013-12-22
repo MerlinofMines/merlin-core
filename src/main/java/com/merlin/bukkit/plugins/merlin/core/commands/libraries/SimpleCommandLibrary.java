@@ -18,7 +18,11 @@ import com.merlin.bukkit.plugins.merlin.core.commands.pieces.CommandPiece;
 public class SimpleCommandLibrary extends AbstractCommandLibrary {
 
 	public SimpleCommandLibrary() {
-		super();
+		super(new CommandMetaData(true));
+	}
+	
+	public SimpleCommandLibrary(CommandMetaData defaultCommandMetaData) {
+		super(defaultCommandMetaData);
 	}
 	
 	public Command getCommand(List<String> commandPieces) throws Exception{
