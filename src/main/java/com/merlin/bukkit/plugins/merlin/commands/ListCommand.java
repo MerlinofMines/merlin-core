@@ -34,7 +34,9 @@ public class ListCommand extends Command {
 				
 				
 				String description = possibility.getCommand().getDescription();
-				
+				if(description!=null && description.length()==0) {
+					description = "Unknown";
+				}
 				builder.append(ChatColor.WHITE).append("- ").append(description).append("\n");
 			}
 			

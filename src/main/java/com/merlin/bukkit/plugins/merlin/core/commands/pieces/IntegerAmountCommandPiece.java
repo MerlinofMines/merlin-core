@@ -28,7 +28,6 @@ public class IntegerAmountCommandPiece extends AbstractCommandPiece<Integer> {
 	public List<String> possibilites(String input) {
 		List<String> list = new ArrayList<String>();
 		if(input == null || input.length()==0) {
-			list.add("<int>");
 			list.add("");
 		}
 		return list;
