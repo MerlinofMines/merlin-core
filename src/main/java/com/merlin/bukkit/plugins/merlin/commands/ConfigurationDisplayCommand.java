@@ -1,8 +1,9 @@
 package com.merlin.bukkit.plugins.merlin.commands;
 
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,15 +11,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ConfigurationDisplayCommand extends PluginConfigurationCommand {
 
 	protected String title = null;
-	protected Map<String,String> propertyDisplayMap = null;
+	protected String indent = " ";
+	protected ChatColor labelColor = ChatColor.GREEN;
+	protected String keyValueSeparator = ChatColor.WHITE+" - ";
+	protected List<PropertyDisplay> properties = null;
 	
 	@Override
 	public boolean execute(CommandSender sender) {
 		try {
 			StringBuilder builder = new StringBuilder();
 			builder.append(title).append("\n");
-			for(String key : propertyDisplayMap.keySet()) {
-				builder.append(" ").append(key).append(": ").append(configuration.get(propertyDisplayMap.get(key))).append("\n");
+			for(PropertyDisplay key : properties) {
+				builder.append(indent).append(labelColor).append(key.label).append(keyValueSeparator).append(key.propertyColor).append(configuration.get(key.property)).append("\n");
 			}
 			sender.sendMessage(builder.toString());
 			return true;
@@ -31,35 +35,23 @@ public class ConfigurationDisplayCommand extends PluginConfigurationCommand {
 	public ConfigurationDisplayCommand(String title, JavaPlugin plugin, Configuration config) {
 		super(plugin,config);
 		this.title = title;
-		this.propertyDisplayMap = new TreeMap<String,String>();
-	}
-
-	public ConfigurationDisplayCommand(String title, JavaPlugin plugin, Configuration config, Map<String,String> propertyDisplayMap) {
-		super(plugin,config);
-		this.title = title;
-		this.propertyDisplayMap = propertyDisplayMap;
+		this.properties = new ArrayList<PropertyDisplay>();
 	}
 	
 	public ConfigurationDisplayCommand(JavaPlugin plugin, String title) {
 		super(plugin);
 		this.title = title;
-		this.propertyDisplayMap = new TreeMap<String,String>();
+		this.properties = new ArrayList<PropertyDisplay>();
 	}
 
-	public ConfigurationDisplayCommand(String title, JavaPlugin plugin, Map<String,String> propertyDisplayMap) {
-		super(plugin);
-		this.title = title;
-		this.propertyDisplayMap = propertyDisplayMap;
+	public void addProperty(String label, String property) {
+		addProperty(label, property,ChatColor.WHITE);
 	}
-
-	public Map<String, String> getPropertyDisplayMap() {
-		return propertyDisplayMap;
+	
+	public void addProperty(String label, String property, ChatColor propertyColor) {
+		properties.add(new PropertyDisplay(label, property, propertyColor));
 	}
-
-	public void setPropertyDisplayMap(Map<String, String> propertyDisplayMap) {
-		this.propertyDisplayMap = propertyDisplayMap;
-	}
-
+	
 	public String getTitle() {
 		return title;
 	}
@@ -74,5 +66,17 @@ public class ConfigurationDisplayCommand extends PluginConfigurationCommand {
 
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
+	}
+	
+	private class PropertyDisplay {
+		private String label,property = null;
+		private ChatColor propertyColor = null;
+		
+		public PropertyDisplay(String label,String property,ChatColor propertyColor) {
+			this.label = label;
+			this.property = property;
+			this.propertyColor = propertyColor;
+		}
+		
 	}
 }
