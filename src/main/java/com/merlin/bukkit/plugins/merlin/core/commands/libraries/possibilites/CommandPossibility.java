@@ -5,12 +5,14 @@ import java.util.Collections;
 import java.util.List;
 
 import com.merlin.bukkit.plugins.merlin.commands.Command;
+import com.merlin.bukkit.plugins.merlin.commands.CommandMetaData;
 import com.merlin.bukkit.plugins.merlin.core.commands.libraries.CommandLibraryUtil;
 import com.merlin.bukkit.plugins.merlin.core.commands.pieces.CommandPiece;
 
 public class CommandPossibility implements Comparable<CommandPossibility> {
 	
 	private Command command;
+	private CommandMetaData metaData;
 	private List<CommandPiece<?>> commandPattern;
 	
 	private List<CommandPatternPossibility> bestPatternMatches;
@@ -63,5 +65,14 @@ public class CommandPossibility implements Comparable<CommandPossibility> {
 	public void setPiecesSize(int piecesSize) {
 		this.piecesSize = piecesSize;
 	}
+
+	public CommandMetaData getMetaData() {
+		return metaData;
+	}
+
+	public void setMetaData(CommandMetaData metaData) {
+		this.metaData = metaData;
+	}
+	
 }
 

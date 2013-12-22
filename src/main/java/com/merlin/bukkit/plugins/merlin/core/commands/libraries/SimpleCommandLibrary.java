@@ -41,13 +41,17 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 				continue;
 			}
 
+			//Determine whether command is re-orderable.
+			Boolean canReorder = metaData.getReorder();
+			
 			//Get Best Pattern Matches for this command
-			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,commandPieces);
+			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,commandPieces,canReorder);
 			
 			//Created new possibility for this command
 			CommandPossibility possibility = new CommandPossibility();
 			possibility.setBestPatternMatches(patternPossibilities);
 			possibility.setCommand(command);
+			possibility.setMetaData(metaData);
 			possibility.setCommandPattern(pattern);
 			possibility.setPiecesSize(commandPieces.size());
 
@@ -97,13 +101,18 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 				continue;
 			}
 
+			//Determine whether command is re-orderable.
+			Boolean canReorder = metaData.getReorder();
+
 			//Get best pattern possibilities for this command.
-			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,otherCommandPieces);
+			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,otherCommandPieces,canReorder);
+			
 			
 			//Create possibility for this command.
 			CommandPossibility possibility = new CommandPossibility();
 			possibility.setBestPatternMatches(patternPossibilities);
 			possibility.setCommand(command);
+			possibility.setMetaData(metaData);
 			possibility.setCommandPattern(pattern);
 			possibility.setPiecesSize(otherCommandPieces.size());
 			
@@ -129,14 +138,27 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 				//TODO: We already checked this above.  Unless this becomes multi-threaded then we can skip the safety checks.
 				List<CommandPiece<?>> commandPattern = commandMap.get(bestCommand.getCommand()).getCommandPattern();
 				
-				//We're completing a command here.  The other pieces better match the size or we're completing the wrong thing.
+
+				//TODO:  This is where we need to make the change for re-ordering
+				
 				for(int j = 0;j<bestPatterns.size()&&bestPatterns.get(j).size()==otherCommandPieces.size();j++) {
 					List<CommandPiece<?>> pieces = new ArrayList<CommandPiece<?>>(commandPattern);
 					pieces.removeAll(bestPatterns.get(j).keySet());
-					for(CommandPiece<?> piece : pieces) {
-						List<String> completions = piece.possibilites(commandPieceStart);
-						if(completions!=null) {
-							suggestions.addAll(completions);//It's a set so just add all the suggestions.
+
+					if(pieces.size()>0) {//If there are remaining pieces
+						Boolean canReOrder = bestCommand.getMetaData().getReorder();
+						if(canReOrder) {//If Can Re Order than get possibilities for all remaining parts of the command.
+							for(CommandPiece<?> piece : pieces) {
+								List<String> completions = piece.possibilites(commandPieceStart);
+								if(completions!=null) {
+									suggestions.addAll(completions);//It's a set so just add all the suggestions.
+								}
+							}
+						} else { // If can not re order, than only get possibilities for the 1st entry of pieces.
+							List<String> completions = pieces.get(0).possibilites(commandPieceStart);
+							if(completions!=null) {
+								suggestions.addAll(completions);
+							}
 						}
 					}
 				}
@@ -173,13 +195,17 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 				continue;
 			}
 
+			//Determine whether command is re-orderable.
+			Boolean canReorder = metaData.getReorder();
+
 			//Get best pattern matches for this command
-			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,commandPieces);
+			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,commandPieces,canReorder);
 			
 			//Create Command Possibility for this command
 			CommandPossibility possibility = new CommandPossibility();
 			possibility.setBestPatternMatches(patternPossibilities);
 			possibility.setCommand(command);
+			possibility.setMetaData(metaData);
 			possibility.setCommandPattern(pattern);
 			possibility.setPiecesSize(commandPieces.size());
 			

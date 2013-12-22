@@ -21,19 +21,32 @@ public class CommandLibraryUtil {
 		return matchCap*((double)matches/(double)piecesSize);
 	}
 	
-	public static List<CommandPatternPossibility> getBestPatternMatches(List<CommandPiece<?>> pattern, List<String> pieces) {
+	public static List<CommandPatternPossibility> getBestPatternMatches(List<CommandPiece<?>> pattern, List<String> pieces, boolean canReorder) {
 
 		Map<Integer,List<Integer>> patternMatches = new HashMap<Integer,List<Integer>>();
 		List<CommandPatternPossibility> bestPatternMatches = new ArrayList<CommandPatternPossibility>();
 		
-		for(int i = 0;i<pattern.size();i++) {
-			List<Integer> matches = new ArrayList<Integer>();
-			for(int j = 0;j<pieces.size();j++) {
-				if(pattern.get(i).matches(pieces.get(j))) {
-					matches.add(j);
+		//TODO: I think this is where my re-ordering change needs to be
+		if(canReorder) {
+			for(int i = 0;i<pattern.size();i++) {
+				List<Integer> matches = new ArrayList<Integer>();
+				for(int j = 0;j<pieces.size();j++) {
+					if(pattern.get(i).matches(pieces.get(j))) {
+						matches.add(j);
+					}
+				}
+				patternMatches.put(i, matches);
+			}
+		} else {
+			for(int i = 0;i<Math.min(pattern.size(),pieces.size());i++) {
+				List<Integer> matches = new ArrayList<Integer>();
+				if(pattern.get(i).matches(pieces.get(i))) {
+					matches.add(i);
+					patternMatches.put(i, matches);
+				} else {
+					break;
 				}
 			}
-			patternMatches.put(i, matches);
 		}
 
 		List<Map<Integer,Integer>> bestMatches = getBestMatches(patternMatches, new ArrayList<Integer>());
@@ -113,7 +126,7 @@ public class CommandLibraryUtil {
 		matches.removeAll(matchesToRemove);
 	}
 	
-	public static double getPatternMatch(List<CommandPiece<?>> pattern, List<String> pieces) {
+	public static double getPatternMatch(List<CommandPiece<?>> pattern, List<String> pieces, boolean canReorder) {
 
 		List<CommandPiece<?>> commandPieces = new ArrayList<CommandPiece<?>>(pattern);
 
@@ -126,7 +139,7 @@ public class CommandLibraryUtil {
 
 		double matches = 0;
 
-		List<CommandPatternPossibility> bestMatches = getBestPatternMatches(commandPieces, pieces);
+		List<CommandPatternPossibility> bestMatches = getBestPatternMatches(commandPieces, pieces, canReorder);
 
 		matches = bestMatches.get(0).size();
 

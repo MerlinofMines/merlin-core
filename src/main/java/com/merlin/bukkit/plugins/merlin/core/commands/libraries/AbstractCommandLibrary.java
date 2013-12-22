@@ -11,7 +11,7 @@ import com.merlin.bukkit.plugins.merlin.core.commands.pieces.CommandPiece;
 public abstract class AbstractCommandLibrary implements CommandLibrary {
 
 	protected Map<Command,CommandMetaData> commandMap = new HashMap<Command, CommandMetaData>();
-	
+
 	@Override
 	public void addCommand(List<CommandPiece<?>> pattern, Command command)
 			throws Exception {
