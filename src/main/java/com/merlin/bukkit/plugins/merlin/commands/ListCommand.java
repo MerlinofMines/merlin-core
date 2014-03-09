@@ -12,7 +12,7 @@ import com.merlin.bukkit.plugins.merlin.core.commands.pieces.CommandPiece;
 public class ListCommand extends Command {
 
 	protected String title;
-	protected String indent = " ";
+	protected String indent = ChatColor.GREEN+"/";
 	protected List<CommandPossibility> commandPossibilities;
 	
 	@Override
