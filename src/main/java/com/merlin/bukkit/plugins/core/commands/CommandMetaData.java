@@ -2,7 +2,7 @@ package com.merlin.bukkit.plugins.core.commands;
 
 import java.util.List;
 
-import com.merlin.bukkit.plugins.core.core.commands.pieces.CommandPiece;
+import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 
 public class CommandMetaData implements Cloneable {
 

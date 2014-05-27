@@ -1,11 +1,11 @@
-package com.merlin.bukkit.plugins.core.core.commands.libraries;
+package com.merlin.bukkit.plugins.core.commands.libraries;
 
 import java.util.List;
 
 import com.merlin.bukkit.plugins.core.commands.Command;
 import com.merlin.bukkit.plugins.core.commands.CommandMetaData;
-import com.merlin.bukkit.plugins.core.core.commands.libraries.possibilites.CommandPossibility;
-import com.merlin.bukkit.plugins.core.core.commands.pieces.CommandPiece;
+import com.merlin.bukkit.plugins.core.commands.libraries.possibilites.CommandPossibility;
+import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 
 public interface CommandLibrary {
 	

@@ -1,4 +1,4 @@
-package com.merlin.bukkit.plugins.core.core.commands.libraries;
+package com.merlin.bukkit.plugins.core.commands.libraries;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.merlin.bukkit.plugins.core.commands.Command;
 import com.merlin.bukkit.plugins.core.commands.CommandMetaData;
-import com.merlin.bukkit.plugins.core.core.commands.pieces.CommandPiece;
+import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 
 public abstract class AbstractCommandLibrary implements CommandLibrary {
 

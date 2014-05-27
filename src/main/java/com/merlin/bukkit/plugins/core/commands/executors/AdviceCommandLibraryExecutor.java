@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 
 import com.merlin.bukkit.plugins.core.commands.Command;
 import com.merlin.bukkit.plugins.core.commands.ListCommand;
-import com.merlin.bukkit.plugins.core.core.commands.libraries.CommandLibrary;
-import com.merlin.bukkit.plugins.core.core.commands.libraries.possibilites.CommandPossibility;
+import com.merlin.bukkit.plugins.core.commands.libraries.CommandLibrary;
+import com.merlin.bukkit.plugins.core.commands.libraries.possibilites.CommandPossibility;
 
 public class AdviceCommandLibraryExecutor extends LibraryCommandExecutor {
 

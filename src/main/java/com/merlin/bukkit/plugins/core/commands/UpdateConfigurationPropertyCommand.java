@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.merlin.bukkit.plugins.core.core.commands.pieces.CommandPiece;
+import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 
 public class UpdateConfigurationPropertyCommand<T extends CommandPiece<?>> extends PluginConfigurationCommand {
 

@@ -1,4 +1,4 @@
-package com.merlin.bukkit.plugins.core.core.commands.pieces;
+package com.merlin.bukkit.plugins.core.commands.pieces;
 
 import java.util.List;
 

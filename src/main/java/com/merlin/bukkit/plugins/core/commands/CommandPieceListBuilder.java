@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.merlin.bukkit.plugins.core.core.commands.pieces.AffirmationCommandPiece;
-import com.merlin.bukkit.plugins.core.core.commands.pieces.CommandPiece;
-import com.merlin.bukkit.plugins.core.core.commands.pieces.LabelCommandPiece;
-import com.merlin.bukkit.plugins.core.core.commands.pieces.StringCommandPiece;
+import com.merlin.bukkit.plugins.core.commands.pieces.AffirmationCommandPiece;
+import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
+import com.merlin.bukkit.plugins.core.commands.pieces.LabelCommandPiece;
+import com.merlin.bukkit.plugins.core.commands.pieces.StringCommandPiece;
 
 public class CommandPieceListBuilder {
 

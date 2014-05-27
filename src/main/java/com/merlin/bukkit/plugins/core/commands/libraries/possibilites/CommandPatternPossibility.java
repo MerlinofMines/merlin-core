@@ -1,8 +1,8 @@
-package com.merlin.bukkit.plugins.core.core.commands.libraries.possibilites;
+package com.merlin.bukkit.plugins.core.commands.libraries.possibilites;
 
 import java.util.HashMap;
 
-import com.merlin.bukkit.plugins.core.core.commands.pieces.CommandPiece;
+import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 
 public class CommandPatternPossibility extends HashMap<CommandPiece<?>,String> implements Comparable<CommandPatternPossibility>{
 

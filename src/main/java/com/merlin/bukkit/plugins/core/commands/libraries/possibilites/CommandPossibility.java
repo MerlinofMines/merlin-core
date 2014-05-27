@@ -1,4 +1,4 @@
-package com.merlin.bukkit.plugins.core.core.commands.libraries.possibilites;
+package com.merlin.bukkit.plugins.core.commands.libraries.possibilites;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.merlin.bukkit.plugins.core.commands.Command;
 import com.merlin.bukkit.plugins.core.commands.CommandMetaData;
-import com.merlin.bukkit.plugins.core.core.commands.libraries.CommandLibraryUtil;
-import com.merlin.bukkit.plugins.core.core.commands.pieces.CommandPiece;
+import com.merlin.bukkit.plugins.core.commands.libraries.CommandLibraryUtil;
+import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 
 public class CommandPossibility implements Comparable<CommandPossibility> {
 	

@@ -9,7 +9,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.merlin.bukkit.plugins.core.commands.Command;
-import com.merlin.bukkit.plugins.core.core.commands.libraries.CommandLibrary;
+import com.merlin.bukkit.plugins.core.commands.libraries.CommandLibrary;
 
 public class LibraryCommandExecutor implements CommandExecutor {
 

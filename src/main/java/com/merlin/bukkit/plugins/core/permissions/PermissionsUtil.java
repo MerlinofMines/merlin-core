@@ -1,4 +1,4 @@
-package com.merlin.bukkit.plugins.core.core.permissions;
+package com.merlin.bukkit.plugins.core.permissions;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

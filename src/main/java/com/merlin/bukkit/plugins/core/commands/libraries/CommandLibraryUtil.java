@@ -1,12 +1,12 @@
-package com.merlin.bukkit.plugins.core.core.commands.libraries;
+package com.merlin.bukkit.plugins.core.commands.libraries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.merlin.bukkit.plugins.core.core.commands.libraries.possibilites.CommandPatternPossibility;
-import com.merlin.bukkit.plugins.core.core.commands.pieces.CommandPiece;
+import com.merlin.bukkit.plugins.core.commands.libraries.possibilites.CommandPatternPossibility;
+import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 
 public class CommandLibraryUtil {
 

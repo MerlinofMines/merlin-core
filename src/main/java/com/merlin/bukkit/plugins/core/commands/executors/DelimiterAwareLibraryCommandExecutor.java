@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-import com.merlin.bukkit.plugins.core.core.commands.libraries.CommandLibrary;
+import com.merlin.bukkit.plugins.core.commands.libraries.CommandLibrary;
 
 public class DelimiterAwareLibraryCommandExecutor extends LibraryCommandExecutor {
 

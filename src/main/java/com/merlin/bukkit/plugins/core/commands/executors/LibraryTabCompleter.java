@@ -7,8 +7,8 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
-import com.merlin.bukkit.plugins.core.core.commands.libraries.CommandLibrary;
-import com.merlin.bukkit.plugins.core.core.commands.libraries.SimpleCommandLibrary;
+import com.merlin.bukkit.plugins.core.commands.libraries.CommandLibrary;
+import com.merlin.bukkit.plugins.core.commands.libraries.SimpleCommandLibrary;
 
 public class LibraryTabCompleter implements TabCompleter {
 
