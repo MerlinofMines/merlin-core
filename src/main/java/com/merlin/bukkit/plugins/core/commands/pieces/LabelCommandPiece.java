@@ -1,83 +1,44 @@
 package com.merlin.bukkit.plugins.core.commands.pieces;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 
-public class LabelCommandPiece extends AbstractCommandPiece<String> {
+import com.merlin.bukkit.plugins.core.collections.factory.StaticCollectionFactory;
+import com.merlin.bukkit.plugins.core.commands.hooks.StringHook;
 
-	private List<String> labels = null;
-	private String currentLabel = null;
+public class LabelCommandPiece extends CollectionCommandPiece<String> {
 
-	public LabelCommandPiece(String label) {
-		if(label==null) {
-			throw new NullPointerException("Label cannot be null");
-		}
-		this.labels = new ArrayList<String>();
-		labels.add(label);
-		this.currentLabel = label;
-		this.chatColor = ChatColor.GREEN;
-		this.rank = 10;
+	public LabelCommandPiece(String... labels) {
+		this(Arrays.asList(labels));
 	}
 	
 	public LabelCommandPiece(List<String> labels) {
+		super(ChatColor.GREEN,10,new StringHook(),new StaticCollectionFactory<String>(labels));
 		if(labels==null || labels.isEmpty()) {
-			throw new NullPointerException("Label cannot be null");
+			throw new NullPointerException("Labels cannot be empty");
 		}
-		this.labels = new ArrayList<String>(labels);
-		this.currentLabel = labels.get(0);
-		this.chatColor = ChatColor.GREEN;
-		this.rank = 10;
+		hook.setValue(labels.get(0));
 	}
 	
-	@Override
-	public boolean matches(String input) {
-
-		for(String label : labels) {
-			if(label.toLowerCase().equals(input.toLowerCase())) {
-				this.currentLabel = input;
-				return true;
-			}
-		}
-		return false;
-	}
-
 	@Override
 	public String getDisplay() {
-		return chatColor+currentLabel;
-	}
-
-
-	@Override
-	public String getValue() {
-		return currentLabel;
+		return chatColor+getHook().getValue();
 	}
 
 	@Override
-	public void setValue(String value) {
-		if(!this.labels.contains(value)) {
-			labels.add(value);
-		}
-		currentLabel = value;
+	protected String getString(String value) {
+		return value;
 	}
 
-	@Override
-	public void setValueFromString(String value) {
-		setValue(value);
-	}
-
-	@Override
-	public List<String> possibilites(String input) {
-		List<String> possibilities = new ArrayList<String>();
-		
-		for(String label : labels) {
-			if(label.startsWith(input)) {
-				possibilities.add(label);
-			}
-		}
-		return possibilities;
+	public static LabelCommandPiece label(String... labels) {
+		return new LabelCommandPiece(labels);
 	}
 	
-	
+	public static LabelCommandPiece label(List<String> labels) {
+		return new LabelCommandPiece(labels);
+	}
+
+
 }

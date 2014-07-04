@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.merlin.bukkit.plugins.core.commands.libraries.possibilites.CommandPossibility;
+import com.merlin.bukkit.plugins.core.commands.libraries.possibilities.CommandPossibility;
 import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 
 public class ListCommand extends Command {

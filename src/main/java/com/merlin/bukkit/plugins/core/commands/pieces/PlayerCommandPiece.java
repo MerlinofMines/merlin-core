@@ -1,49 +1,15 @@
 package com.merlin.bukkit.plugins.core.commands.pieces;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
+import com.merlin.bukkit.plugins.core.collections.factory.PlayerCollectionFactory;
+import com.merlin.bukkit.plugins.core.commands.hooks.PlayerHook;
 
-public class PlayerCommandPiece extends AbstractCommandPiece<OfflinePlayer> {
+public class PlayerCommandPiece extends CollectionCommandPiece<Player> {
 
-	private OfflinePlayer player = null;
-	private Server server = null;
-	private boolean requireOnline = false;
-	
-	public Server getServer() {
-		return server;
-	}
-
-	public void setServer(Server server) {
-		this.server = server;
-	}
-
-	public PlayerCommandPiece(Server server) {
-		super();
-		this.server = server;
-	}
-
-	@Override
-	public boolean matches(String input) {
-		return getExactPlayer(input)!=null;
-	}
-
-	@Override
-	public List<String> possibilites(String input) {
-
-		OfflinePlayer[] players = getPlayers();
-		List<String> possibilities = new ArrayList<String>();
-
-		if(players.length>0) {
-			for(OfflinePlayer player : players) {
-				if(player.getName().startsWith(input)) {
-					possibilities.add(player.getName());
-				}
-			}
-		}
-		return possibilities;
+	public PlayerCommandPiece() {
+		super(ChatColor.AQUA,5,new PlayerHook(),new PlayerCollectionFactory());
 	}
 
 	@Override
@@ -52,48 +18,8 @@ public class PlayerCommandPiece extends AbstractCommandPiece<OfflinePlayer> {
 	}
 
 	@Override
-	public OfflinePlayer getValue() {
-		return player;
+	protected String getString(Player value) {
+		return value.getName();
 	}
 
-	@Override
-	public void setValue(OfflinePlayer value) {
-		this.player = value;
-	}
-
-	@Override
-	public void setValueFromString(String value)
-			throws IllegalArgumentException {
-		OfflinePlayer player = getExactPlayer(value);
-		if(player==null) throw new IllegalArgumentException("Unable to find playe with name: " + value);
-		this.player = player;
-	}
-	
-	private OfflinePlayer[] getPlayers() {
-		OfflinePlayer[] players = null;
-		if(requireOnline) {
-			players = (OfflinePlayer[])server.getOnlinePlayers();
-		} else {
-			players = server.getOfflinePlayers();
-		}
-		return players;
-	}
-	
-	private OfflinePlayer getExactPlayer(String name) {
-		OfflinePlayer[] players = getPlayers();
-		if(players.length==0) {
-			return null;
-		}
-		else {
-			for(OfflinePlayer player : players) {
-				if(player.getName().equals(name)) {
-					return player;//Found a matching players.  According to 1.7.6 names are still expected to be unique so this
-								//Is a valid check.
-				}
-			}
-			//No matching players.  Return false
-			return null;
-		}
-		
-	}
 }

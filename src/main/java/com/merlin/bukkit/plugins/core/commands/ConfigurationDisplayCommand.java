@@ -1,4 +1,4 @@
-package com.merlin.bukkit.plugins.core.commands;
+	package com.merlin.bukkit.plugins.core.commands;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.merlin.bukkit.plugins.core.path.Path;
+import com.merlin.bukkit.plugins.core.path.ConfigurationPath;
+import com.merlin.bukkit.plugins.core.path.pieces.StaticPathPiece;
+
 public class ConfigurationDisplayCommand extends PluginConfigurationCommand {
 
-	protected String title = null;
+	protected Path title = null;
 	protected String indent = " ";
 	protected ChatColor labelColor = ChatColor.GREEN;
 	protected String keyValueSeparator = ChatColor.WHITE+" - ";
@@ -20,9 +24,9 @@ public class ConfigurationDisplayCommand extends PluginConfigurationCommand {
 	public boolean execute(CommandSender sender) {
 		try {
 			StringBuilder builder = new StringBuilder();
-			builder.append(title).append("\n");
+			builder.append(title.getPath()).append("\n");
 			for(PropertyDisplay key : properties) {
-				builder.append(indent).append(labelColor).append(key.label).append(keyValueSeparator).append(key.propertyColor).append(configuration.get(key.property)).append("\n");
+				builder.append(indent).append(labelColor).append(key.label).append(keyValueSeparator).append(key.propertyColor).append(configuration.get(key.property.getPath())).append("\n");
 			}
 			sender.sendMessage(builder.toString());
 			return true;
@@ -32,31 +36,29 @@ public class ConfigurationDisplayCommand extends PluginConfigurationCommand {
 		}
 	}
 	
-	public ConfigurationDisplayCommand(String title, JavaPlugin plugin, Configuration config) {
-		super(plugin,config);
-		this.title = title;
-		this.properties = new ArrayList<PropertyDisplay>();
+	public ConfigurationDisplayCommand(String title, JavaPlugin plugin) {
+		this(new ConfigurationPath(new StaticPathPiece(title)) ,plugin);
 	}
 	
-	public ConfigurationDisplayCommand(JavaPlugin plugin, String title) {
+	public ConfigurationDisplayCommand(Path title, JavaPlugin plugin) {
 		super(plugin);
 		this.title = title;
 		this.properties = new ArrayList<PropertyDisplay>();
 	}
-
-	public void addProperty(String label, String property) {
+	
+	public void addProperty(String label, ConfigurationPath property) {
 		addProperty(label, property,ChatColor.WHITE);
 	}
 	
-	public void addProperty(String label, String property, ChatColor propertyColor) {
+	public void addProperty(String label, ConfigurationPath property, ChatColor propertyColor) {
 		properties.add(new PropertyDisplay(label, property, propertyColor));
 	}
 	
 	public String getTitle() {
-		return title;
+		return title.getPath();
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(Path title) {
 		this.title = title;
 	}
 
@@ -69,10 +71,12 @@ public class ConfigurationDisplayCommand extends PluginConfigurationCommand {
 	}
 	
 	private class PropertyDisplay {
-		private String label,property = null;
+		private String label;
+		
+		private Path property = null;
 		private ChatColor propertyColor = null;
 		
-		public PropertyDisplay(String label,String property,ChatColor propertyColor) {
+		public PropertyDisplay(String label,ConfigurationPath property,ChatColor propertyColor) {
 			this.label = label;
 			this.property = property;
 			this.propertyColor = propertyColor;

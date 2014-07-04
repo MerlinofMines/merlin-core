@@ -37,7 +37,7 @@ public class LibraryTabCompleter implements TabCompleter {
 		String current = pieces.get(pieces.size()-1);
 		pieces.remove(pieces.size()-1);
 		
-		List<String> suggestions = library.getCommandPieceSuggestions(current,pieces);
+		List<String> suggestions = library.getCommandPieceSuggestions(current,pieces,sender);
 
 		return suggestions;
 	}

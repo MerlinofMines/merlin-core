@@ -38,7 +38,7 @@ public class LibraryCommandExecutor implements CommandExecutor {
 		pieces.addAll(Arrays.asList(args));
 		Command libraryCommand = null;
 		try {
-			libraryCommand = library.getCommand(pieces);
+			libraryCommand = library.getCommand(pieces,sender);
 		} catch(Exception e) {
 			sender.getServer().getLogger().warning("Exception locating command: " + e.getMessage());
 			return false;
@@ -56,7 +56,7 @@ public class LibraryCommandExecutor implements CommandExecutor {
 			boolean executed = libraryCommand.execute(sender);
 			if(executed) {
 				if(libraryCommand.getSuccessMessage()!=null) {
-					sender.sendMessage(libraryCommand.getSuccessMessage());
+					sender.sendMessage(libraryCommand.getSuccessMessage().toString());
 				}
 			} else {
 				sender.sendMessage("Command did not execute successfully");

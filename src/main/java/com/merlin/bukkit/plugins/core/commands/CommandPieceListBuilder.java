@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.merlin.bukkit.plugins.core.commands.pieces.AffirmationCommandPiece;
 import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
-import com.merlin.bukkit.plugins.core.commands.pieces.LabelCommandPiece;
-import com.merlin.bukkit.plugins.core.commands.pieces.StringCommandPiece;
 
 public class CommandPieceListBuilder {
 
@@ -17,23 +14,8 @@ public class CommandPieceListBuilder {
 		return this;
 	}
 	
-	public CommandPieceListBuilder label(String... labels) {
-		pieces.add(new LabelCommandPiece(Arrays.asList(labels)));
-		return this;
-	}
-	
-	public CommandPieceListBuilder label(List<String> labels) {
-		pieces.add(new LabelCommandPiece(labels));
-		return this;
-	}
-
-	public CommandPieceListBuilder string(StringCommandPiece stringHook) {
-		pieces.add(stringHook);
-		return this;
-	}
-	
-	public CommandPieceListBuilder affirmation(AffirmationCommandPiece affirmationHook) {
-		pieces.add(affirmationHook);
+	public <T> CommandPieceListBuilder add(CommandPiece<T> commandPiece) {
+		pieces.add(commandPiece);
 		return this;
 	}
 	
@@ -48,4 +30,9 @@ public class CommandPieceListBuilder {
 	public List<CommandPiece<?>> getPieces() {
 		return pieces;
 	}
+	
+	public static List<CommandPiece<?>> build(CommandPiece<?>... commandPieces) {
+		return Arrays.asList(commandPieces);
+	}
+	
 }

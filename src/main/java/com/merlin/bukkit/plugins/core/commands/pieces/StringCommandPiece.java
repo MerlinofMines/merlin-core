@@ -5,48 +5,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
-public class StringCommandPiece extends AbstractCommandPiece<String> {
+import com.merlin.bukkit.plugins.core.collections.factory.StaticCollectionFactory;
+import com.merlin.bukkit.plugins.core.commands.hooks.StringHook;
 
-	private String string = null;
-	
+public class StringCommandPiece extends CollectionCommandPiece<String> {
+
 	public StringCommandPiece() {
-		this.chatColor = ChatColor.WHITE;
-		this.rank = 1;
-}
+		super(ChatColor.WHITE,1,new StringHook(),new StaticCollectionFactory<String>());
+	}
 	
 	@Override
-	public boolean matches(String input) {
-		return true;
+	public boolean matches(String input,CommandSender sender) {
+		return input!=null && !input.isEmpty();
 	}
 
 	@Override
 	public String getDisplay() {
-		return ChatColor.WHITE+string;
+		return ChatColor.WHITE+"<string>";
 	}
 
 	@Override
-	public String getValue() {
-		return string;
-	}
-
-	@Override
-	public void setValue(String value) {
-		this.string = value;
-	}
-
-	@Override
-	public void setValueFromString(String value) {
-		this.string = value;
-	}
-
-	@Override
-	public List<String> possibilites(String input) {
+	public List<String> possibilities(String input,CommandSender sender) {
 		List<String> list = new ArrayList<String>();
-		if(input == null || input.length()==0) {
-			list.add("<string>");
+		if(getOptions().isEmpty()) {
 			list.add("");
+			return list;
+		}
+		for(String option : getOptions()) {
+			if(option.toLowerCase().startsWith(input.toLowerCase())) {
+				list.add(option);
+			}
 		}
 		return list;
+	}
+
+	@Override
+	public void setValueFromString(String input, CommandSender sender) {
+		if(input!=null && !input.isEmpty()) {
+			hook.setValue(input);
+		} else {
+			throw new IllegalArgumentException("input must be a valid String");
+		}
+
+	}
+
+	@Override
+	protected String getString(String value) {
+		return value;
 	}
 }	

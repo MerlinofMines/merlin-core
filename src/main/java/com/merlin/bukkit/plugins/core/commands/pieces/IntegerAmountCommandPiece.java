@@ -3,56 +3,65 @@ package com.merlin.bukkit.plugins.core.commands.pieces;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+
+import com.merlin.bukkit.plugins.core.commands.hooks.Hook;
+import com.merlin.bukkit.plugins.core.commands.hooks.IntegerHook;
 
 public class IntegerAmountCommandPiece extends AbstractCommandPiece<Integer> {
 	
-	private int value = 0;
-	
 	public IntegerAmountCommandPiece() {
-		chatColor = ChatColor.BLUE;
-		rank = 5;
-}
+		this(new IntegerHook());
+	}
 	
+	public IntegerAmountCommandPiece(Hook<Integer> hook) {
+		this(new ArrayList<Integer>(),hook);
+	}
+	
+	public IntegerAmountCommandPiece(List<Integer> integerOptions) {
+		this(integerOptions,new IntegerHook());
+	}
+
+	public IntegerAmountCommandPiece(List<Integer> integerOptions,Hook<Integer> hook) {
+		super(ChatColor.BLUE,5,hook);
+	}
+
 	@Override
-	public boolean matches(String input) {
-		try {
-			value = Integer.parseInt(input);
-			return true;
-		} catch(NumberFormatException nfe) {
-			return false;
-		}
+	public boolean matches(String input,CommandSender sender) {
+		return NumberUtils.isDigits(input);
 	}
 	
 	@Override
-	public List<String> possibilites(String input) {
-		List<String> list = new ArrayList<String>();
-		if(input == null || input.length()==0) {
-			list.add("");
-		}
-		return list;
+	public List<String> possibilities(String input,CommandSender sender) {
+		return null;
+	}
+	
+	@Override
+	public void setValueFromString(String input, CommandSender sender) throws IllegalArgumentException{
+		hook.setValue(Integer.parseInt(input));
 	}
 
 	@Override
 	public String getDisplay() {
 		return chatColor+"<int>";
 	}
-
 	
-	@Override
-	public Integer getValue() {
-		return value;
+	public static IntegerAmountCommandPiece integer() {
+		return new IntegerAmountCommandPiece();
 	}
 
-	@Override
-	public void setValue(Integer value) {
-		this.value = value;
+	public static IntegerAmountCommandPiece integer(Hook<Integer> hook) {
+		return new IntegerAmountCommandPiece(hook);
 	}
 
-	@Override
-	public void setValueFromString(String value) {
-		setValue(Integer.parseInt(value));
+	public static IntegerAmountCommandPiece integer(List<Integer> options) {
+		return new IntegerAmountCommandPiece(options);
 	}
-
 	
+	public static IntegerAmountCommandPiece integer(List<Integer> options, Hook<Integer> hook) {
+		return new IntegerAmountCommandPiece(options, hook);
+	}
+
 }

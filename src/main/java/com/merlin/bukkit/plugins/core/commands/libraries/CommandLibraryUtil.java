@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.merlin.bukkit.plugins.core.commands.libraries.possibilites.CommandPatternPossibility;
+import org.bukkit.command.CommandSender;
+
+import com.merlin.bukkit.plugins.core.commands.libraries.possibilities.CommandPatternPossibility;
 import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 
 public class CommandLibraryUtil {
@@ -21,7 +23,7 @@ public class CommandLibraryUtil {
 		return matchCap*((double)matches/(double)piecesSize);
 	}
 	
-	public static List<CommandPatternPossibility> getBestPatternMatches(List<CommandPiece<?>> pattern, List<String> pieces, boolean canReorder) {
+	public static List<CommandPatternPossibility> getBestPatternMatches(List<CommandPiece<?>> pattern, List<String> pieces, boolean canReorder,CommandSender sender) {
 
 		Map<Integer,List<Integer>> patternMatches = new HashMap<Integer,List<Integer>>();
 		List<CommandPatternPossibility> bestPatternMatches = new ArrayList<CommandPatternPossibility>();
@@ -31,7 +33,7 @@ public class CommandLibraryUtil {
 			for(int i = 0;i<pattern.size();i++) {
 				List<Integer> matches = new ArrayList<Integer>();
 				for(int j = 0;j<pieces.size();j++) {
-					if(pattern.get(i).matches(pieces.get(j))) {
+					if(pattern.get(i).matches(pieces.get(j),sender)) {
 						matches.add(j);
 					}
 				}
@@ -40,7 +42,7 @@ public class CommandLibraryUtil {
 		} else {
 			for(int i = 0;i<Math.min(pattern.size(),pieces.size());i++) {
 				List<Integer> matches = new ArrayList<Integer>();
-				if(pattern.get(i).matches(pieces.get(i))) {
+				if(pattern.get(i).matches(pieces.get(i),sender)) {
 					matches.add(i);
 					patternMatches.put(i, matches);
 				} else {
@@ -126,7 +128,7 @@ public class CommandLibraryUtil {
 		matches.removeAll(matchesToRemove);
 	}
 	
-	public static double getPatternMatch(List<CommandPiece<?>> pattern, List<String> pieces, boolean canReorder) {
+	public static double getPatternMatch(List<CommandPiece<?>> pattern, List<String> pieces, boolean canReorder,CommandSender sender) {
 
 		List<CommandPiece<?>> commandPieces = new ArrayList<CommandPiece<?>>(pattern);
 
@@ -139,7 +141,7 @@ public class CommandLibraryUtil {
 
 		double matches = 0;
 
-		List<CommandPatternPossibility> bestMatches = getBestPatternMatches(commandPieces, pieces, canReorder);
+		List<CommandPatternPossibility> bestMatches = getBestPatternMatches(commandPieces, pieces, canReorder,sender);
 
 		matches = bestMatches.get(0).size();
 

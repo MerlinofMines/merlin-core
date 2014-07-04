@@ -1,86 +1,68 @@
 package com.merlin.bukkit.plugins.core.commands.pieces;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
 
-public class AffirmationCommandPiece extends AbstractCommandPiece<Boolean> {
-	
-	Map<String,Boolean> affirmations;
-	boolean value = false;
-	
-	public AffirmationCommandPiece() {
-		affirmations = new TreeMap<String,Boolean>();
-//		affirmations.put("yes",true);
-//		affirmations.put("no",false);
-//		affirmations.put("true",true);
-//		affirmations.put("false",false);
-//		affirmations.put("on", true);
-//		affirmations.put("off",false);
-		affirmations.put("enable", true);
-//		affirmations.put("enabled", true);
-		affirmations.put("disable",false);
-//		affirmations.put("disabled",false);
-//		affirmations.put("start",true);
-//		affirmations.put("stop",false);
-//		affirmations.put("begin",true);
-//		affirmations.put("end",false);
-		chatColor = ChatColor.YELLOW;
-		rank = 5;
-	}
-	
-	public AffirmationCommandPiece(Map<String,Boolean> affirmations) {
-		if(affirmations.isEmpty()) {
-			throw new ArrayIndexOutOfBoundsException("affirmations must not be empty");
-		}
-		affirmations = new HashMap<String,Boolean>();
-		affirmations.putAll(affirmations);
-		chatColor = ChatColor.YELLOW;
-		rank = 5;
-	}
-	
-	@Override
-	public boolean matches(String input) {
-		Boolean value = affirmations.get(input);
-		if(value!=null) {
-			this.value = value;
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public List<String> possibilites(String input) {
-		List<String> possibilities = new ArrayList<String>();
-		
-		for(String affirmation : affirmations.keySet()) {
-			if(affirmation.startsWith(input))possibilities.add(affirmation);
-		}
-		return possibilities;		
-	}
+import com.merlin.bukkit.plugins.core.collections.factory.StaticCollectionFactory;
+import com.merlin.bukkit.plugins.core.commands.hooks.AffirmationHook;
+import com.merlin.bukkit.plugins.core.commands.hooks.Hook;
 
+public class AffirmationCommandPiece extends MappedValueCommandPiece<Boolean> {
+	
+	public static Map<String,Boolean> getAffirmationMap() {
+		Map<String,Boolean> affirmations = new TreeMap<String, Boolean>();
+		affirmations.put("yes",true);
+		affirmations.put("no",false);
+		affirmations.put("true",true);
+		affirmations.put("false",false);
+		affirmations.put("on", true);
+		affirmations.put("off",false);
+		affirmations.put("enable", true);
+		affirmations.put("enabled", true);
+		affirmations.put("disable",false);
+		affirmations.put("disabled",false);
+		affirmations.put("start",true);
+		affirmations.put("stop",false);
+		affirmations.put("begin",true);
+		affirmations.put("end",false);
+		return affirmations;
+	}
+	
+	public AffirmationCommandPiece(String... affirmations) {
+		this(Arrays.asList(affirmations));
+	}
+	
+	public AffirmationCommandPiece(List<String> affirmations) {
+		this(getAffirmationMap(),affirmations);
+	}
+	
+	public AffirmationCommandPiece(Map<String,Boolean> affirmationMap,List<String> affirmations) {
+		this(affirmationMap,affirmations,new AffirmationHook());
+	}
+	
+	public AffirmationCommandPiece(List<String> affirmations,Hook<Boolean> hook) {
+		this(getAffirmationMap(),affirmations,hook);
+	}
+	
+	public AffirmationCommandPiece(Map<String,Boolean> affirmationMap,List<String> affirmations,Hook<Boolean> hook) {
+		super(affirmationMap,ChatColor.YELLOW,5,hook,new StaticCollectionFactory<String>(affirmations));
+	}
+	
 	@Override
 	public String getDisplay() {
 		return chatColor+"(affirmative)";
 	}
-
-	@Override
-	public Boolean getValue() {
-		return value;
+	
+	public static AffirmationCommandPiece affirm(String... affirmations) {
+		return new AffirmationCommandPiece(affirmations);
 	}
-
-	@Override
-	public void setValue(Boolean value) {
-		this.value = value;
+	
+	public static AffirmationCommandPiece affirm(Hook<Boolean> hook,String... affirmations) {
+		return new AffirmationCommandPiece(Arrays.asList(affirmations),hook);
 	}
-
-	@Override
-	public void setValueFromString(String value) {
-		this.value = affirmations.get(value);
-	}
+	
 }

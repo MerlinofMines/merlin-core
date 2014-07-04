@@ -1,4 +1,4 @@
-package com.merlin.bukkit.plugins.core.commands.libraries.possibilites;
+package com.merlin.bukkit.plugins.core.commands.libraries.possibilities;
 
 import java.util.ArrayList;
 import java.util.Collections;

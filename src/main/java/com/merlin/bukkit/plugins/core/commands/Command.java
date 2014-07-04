@@ -1,19 +1,27 @@
 package com.merlin.bukkit.plugins.core.commands;
 
+import static com.merlin.bukkit.plugins.core.path.SimplePath.simple;
+
 import org.bukkit.command.CommandSender;
+
+import com.merlin.bukkit.plugins.core.path.Path;
 
 public abstract class Command {
 
 	protected String permission = null;
 	protected String description = null;
-	protected String successMessage = null;
-	
-	public String getSuccessMessage() {
+	protected Path successMessage = null;
+
+	public Path getSuccessMessage() {
 		return successMessage;
 	}
 
-	public void setSuccessMessage(String successMessage) {
+	public void setSuccessMessage(Path successMessage) {
 		this.successMessage = successMessage;
+	}
+
+	public void setSuccessMessage(String successMessage) {
+		simple(successMessage);
 	}
 
 	public String getPermission() {
@@ -23,7 +31,7 @@ public abstract class Command {
 	public void setPermission(String permission) {
 		this.permission = permission;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -31,6 +39,6 @@ public abstract class Command {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public abstract boolean execute(CommandSender sender);	
+
+	public abstract boolean execute(CommandSender sender);
 }

@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import com.merlin.bukkit.plugins.core.commands.Command;
 import com.merlin.bukkit.plugins.core.commands.ListCommand;
 import com.merlin.bukkit.plugins.core.commands.libraries.CommandLibrary;
-import com.merlin.bukkit.plugins.core.commands.libraries.possibilites.CommandPossibility;
+import com.merlin.bukkit.plugins.core.commands.libraries.possibilities.CommandPossibility;
 
 public class AdviceCommandLibraryExecutor extends LibraryCommandExecutor {
 
@@ -34,7 +34,7 @@ public class AdviceCommandLibraryExecutor extends LibraryCommandExecutor {
 		pieces.addAll(Arrays.asList(args));
 		Command libraryCommand = null;
 		try {
-			libraryCommand = library.getCommand(pieces);
+			libraryCommand = library.getCommand(pieces,sender);
 		} catch(Exception e) {
 			sender.getServer().getLogger().warning("Exception locating command: " + e.getMessage());
 			return false;
@@ -42,7 +42,7 @@ public class AdviceCommandLibraryExecutor extends LibraryCommandExecutor {
 		
 		if(libraryCommand==null) {
 			try {
-				List<CommandPossibility> possibles = library.getPossibleCommands(pieces);
+				List<CommandPossibility> possibles = library.getPossibleCommands(pieces,sender);
 				
 				
  				if(possibles.isEmpty()) {
@@ -68,7 +68,7 @@ public class AdviceCommandLibraryExecutor extends LibraryCommandExecutor {
 			boolean executed = libraryCommand.execute(sender);
 			if(executed) {
 				if(libraryCommand.getSuccessMessage()!=null) {
-					sender.sendMessage(libraryCommand.getSuccessMessage());
+					sender.sendMessage(libraryCommand.getSuccessMessage().toString());
 				}
 			} else {
 				sender.sendMessage("Command did not execute successfully");

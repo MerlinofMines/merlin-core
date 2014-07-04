@@ -1,50 +1,43 @@
 package com.merlin.bukkit.plugins.core.commands;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
+import com.merlin.bukkit.plugins.core.commands.hooks.PersistableHook;
+import com.merlin.bukkit.plugins.core.path.Path;
 
-public class UpdateConfigurationPropertyCommand<T extends CommandPiece<?>> extends PluginConfigurationCommand {
+public class UpdateConfigurationPropertyCommand<T> extends PluginConfigurationCommand {
 
-	protected T commandPiece;
-	protected String propertyPath;
+	protected PersistableHook<T> hook;
+	protected Path propertyPath;
 	
 	@Override
 	public boolean execute(CommandSender sender) {
-		configuration.set(propertyPath,commandPiece.getValue());
+		configuration.set(propertyPath.getPath(),hook.getPersistableRepresentation());
 		plugin.saveConfig();
 		return true;
 	}
 
-	public UpdateConfigurationPropertyCommand(Configuration configuration,
-			JavaPlugin plugin, T commandPiece, String propertyPath) {
-		super(plugin,configuration);
-		this.commandPiece = commandPiece;
-		this.propertyPath = propertyPath;
-	}
-
-	public UpdateConfigurationPropertyCommand(JavaPlugin plugin,
-			T commandPiece, String propertyPath) {
+	public UpdateConfigurationPropertyCommand(JavaPlugin plugin, Path propertyPath, PersistableHook<T> hook) {
 		super(plugin);
-		this.commandPiece = commandPiece;
 		this.propertyPath = propertyPath;
+		this.hook = hook;
 	}
 
-	public T getCommandPiece() {
-		return commandPiece;
+	public PersistableHook<T> getHook() {
+		return hook;
 	}
 
-	public void setCommandPiece(T commandPiece) {
-		this.commandPiece = commandPiece;
+	public void setHook(PersistableHook<T> hook) {
+		this.hook = hook;
 	}
 
-	public String getPropertyPath() {
+	public Path getPropertyPath() {
 		return propertyPath;
 	}
 
-	public void setPropertyPath(String propertyPath) {
+	public void setPropertyPath(Path propertyPath) {
 		this.propertyPath = propertyPath;
 	}
+
 }

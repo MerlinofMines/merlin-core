@@ -9,11 +9,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 
 import com.merlin.bukkit.plugins.core.commands.Command;
 import com.merlin.bukkit.plugins.core.commands.CommandMetaData;
-import com.merlin.bukkit.plugins.core.commands.libraries.possibilites.CommandPatternPossibility;
-import com.merlin.bukkit.plugins.core.commands.libraries.possibilites.CommandPossibility;
+import com.merlin.bukkit.plugins.core.commands.libraries.possibilities.CommandPatternPossibility;
+import com.merlin.bukkit.plugins.core.commands.libraries.possibilities.CommandPossibility;
 import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 public class SimpleCommandLibrary extends AbstractCommandLibrary {
 
@@ -25,7 +26,7 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 		super(defaultCommandMetaData);
 	}
 	
-	public Command getCommand(List<String> commandPieces) throws Exception{
+	public Command getCommand(List<String> commandPieces,CommandSender sender) throws Exception{
 
 		List<CommandPossibility> possibilities = new ArrayList<CommandPossibility>();
 
@@ -49,7 +50,7 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 			Boolean canReorder = metaData.getReorder();
 			
 			//Get Best Pattern Matches for this command
-			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,commandPieces,canReorder);
+			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,commandPieces,canReorder,sender);
 			
 			//Created new possibility for this command
 			CommandPossibility possibility = new CommandPossibility();
@@ -75,7 +76,7 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 				CommandPatternPossibility bestPossibility = bestCommand.getBestCommandMatch();//Best pattern match for this command
 				//Need to set the hooks for this command in order to execute it.  Essentially maps the pattern values to the command values.
 				for(CommandPiece<?> piece : bestPossibility.keySet()) {
-					piece.setValueFromString(bestPossibility.get(piece));
+					piece.setValueFromString(bestPossibility.get(piece),sender);
 				}
 				return bestCommand.getCommand();//Command is ready to execute and can be returned.
 			} else {//No Perfect Match, return null
@@ -86,7 +87,7 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 
 	@Override
 	public List<String> getCommandPieceSuggestions(String commandPieceStart,
-			List<String> otherCommandPieces) {
+			List<String> otherCommandPieces,CommandSender sender) {
 		List<CommandPossibility> possibilities = new ArrayList<CommandPossibility>();
 
 		for(Command command : commandMap.keySet()) {
@@ -109,7 +110,7 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 			Boolean canReorder = metaData.getReorder();
 
 			//Get best pattern possibilities for this command.
-			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,otherCommandPieces,canReorder);
+			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,otherCommandPieces,canReorder,sender);
 			
 			
 			//Create possibility for this command.
@@ -149,13 +150,13 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 						Boolean canReOrder = bestCommand.getMetaData().getReorder();
 						if(canReOrder) {//If Can Re Order than get possibilities for all remaining parts of the command.
 							for(CommandPiece<?> piece : pieces) {
-								List<String> completions = piece.possibilites(commandPieceStart);
+								List<String> completions = piece.possibilities(commandPieceStart,sender);
 								if(completions!=null) {
 									suggestions.addAll(completions);//It's a set so just add all the suggestions.
 								}
 							}
 						} else { // If can not re order, than only get possibilities for the 1st entry of pieces.
-							List<String> completions = pieces.get(0).possibilites(commandPieceStart);
+							List<String> completions = pieces.get(0).possibilities(commandPieceStart,sender);
 							if(completions!=null) {
 								suggestions.addAll(completions);
 							}
@@ -176,7 +177,7 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 
 	@Override
 	public List<CommandPossibility> getPossibleCommands(
-			List<String> commandPieces) throws Exception {
+			List<String> commandPieces,CommandSender sender) throws Exception {
 		List<CommandPossibility> possibilities = new ArrayList<CommandPossibility>();
 
 		for(Command command : commandMap.keySet()) {
@@ -199,7 +200,7 @@ public class SimpleCommandLibrary extends AbstractCommandLibrary {
 			Boolean canReorder = metaData.getReorder();
 
 			//Get best pattern matches for this command
-			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,commandPieces,canReorder);
+			List<CommandPatternPossibility> patternPossibilities = getBestPatternMatches(pattern,commandPieces,canReorder,sender);
 			
 			//Create Command Possibility for this command
 			CommandPossibility possibility = new CommandPossibility();
