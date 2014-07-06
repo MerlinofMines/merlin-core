@@ -1,4 +1,4 @@
-package com.merlin.bukkit.plugins.core.commands;
+package com.merlin.bukkit.plugins.core.commands.builder;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,5 +1,7 @@
 package com.merlin.bukkit.plugins.core.commands.executors;
 
+import static com.merlin.bukkit.plugins.core.path.SimplePath.simple;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +51,7 @@ public class AdviceCommandLibraryExecutor extends LibraryCommandExecutor {
 					sender.sendMessage(COMMAND_NOT_FOUND_MESSAGE);
 					return true;
 				} else {
-					ListCommand suggestions = new ListCommand("Unable to find a matching command.  Suggestions: ");
+					ListCommand suggestions = new ListCommand(simple("Unable to find a matching command.  Suggestions: "));
 					for(int i = 0;i<Math.min(possibles.size(),maxSuggestions);i++) {
 						suggestions.addPossibility(possibles.get(i));
 					}

@@ -6,15 +6,16 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-import com.merlin.bukkit.plugins.core.commands.libraries.possibilities.CommandPossibility;
+import com.merlin.bukkit.plugins.core.commands.libraries.CommandLibrary;
 import com.merlin.bukkit.plugins.core.commands.pieces.CommandPiece;
 import com.merlin.bukkit.plugins.core.path.Path;
 
-public class ListCommand extends Command {
+public class LibraryListCommand extends Command {
 
 	protected Path title;
 	protected String indent = ChatColor.GREEN+"/";
-	protected List<CommandPossibility> commandPossibilities;
+	protected List<Command> commandPossibilities;
+	protected CommandLibrary library;
 	
 	@Override
 	public boolean execute(CommandSender sender) {
@@ -24,17 +25,16 @@ public class ListCommand extends Command {
 			builder.append(title.getPath()).append("\n");
 			
 			for(int i = 0;i<commandPossibilities.size();i++) {
-				
+				Command command = commandPossibilities.get(i);
 				builder.append(indent);
-				CommandPossibility possibility = commandPossibilities.get(i);
-				List<CommandPiece<?>> pattern = possibility.getCommandPattern();
+				List<CommandPiece<?>> pattern = library.getCommandPattern(command);
 
 				for(int j = 0;j<pattern.size();j++) {
 					builder.append(pattern.get(j).getDisplay()).append(" ");
 				}
 				
 				
-				String description = possibility.getCommand().getDescription();
+				String description = command.getDescription();
 				if(description==null || description.length()==0) {
 					description = "No Description";
 				}
@@ -58,36 +58,28 @@ public class ListCommand extends Command {
 		this.title = title;
 	}
 
-	public List<CommandPossibility> getCommandPossibilities() {
+	public List<Command> getCommandPossibilities() {
 		return commandPossibilities;
 	}
 
 	public void setCommandPossibilities(
-			List<CommandPossibility> commandPossibilities) {
+			List<Command> commandPossibilities) {
 		this.commandPossibilities = commandPossibilities;
 	}
 
-	public ListCommand(Path title,
-			List<CommandPossibility> commandPossibilities) {
+	public LibraryListCommand(Path title,
+			List<Command> commandPossibilities,CommandLibrary library) {
 		super();
 		this.title = title;
 		this.commandPossibilities = commandPossibilities;
+		this.library = library;
 	}
 	
-	public ListCommand(Path title) {
-		super();
-		this.title = title;
-		this.commandPossibilities = new ArrayList<CommandPossibility>();
+	public LibraryListCommand(Path title,CommandLibrary library) {
+		this(title,new ArrayList<Command>(),library);
 	}
 	
-	public void addPossibility(CommandPossibility possibility) {
-		commandPossibilities.add(possibility);
-	}
-
-	public void addPossibility(Command command, List<CommandPiece<?>> pattern) {
-		CommandPossibility possibility = new CommandPossibility();
-		possibility.setCommand(command);
-		possibility.setCommandPattern(pattern);
+	public void addPossibility(Command possibility) {
 		commandPossibilities.add(possibility);
 	}
 
@@ -99,5 +91,5 @@ public class ListCommand extends Command {
 		this.indent = indent;
 	}
 	
-	
+
 }

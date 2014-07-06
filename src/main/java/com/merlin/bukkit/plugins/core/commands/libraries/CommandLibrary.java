@@ -13,8 +13,9 @@ public interface CommandLibrary {
 	
 	public Command getCommand(List<String> commandPieces,CommandSender sender) throws Exception;	
 	public List<CommandPossibility> getPossibleCommands(List<String> commandPieces,CommandSender sender) throws Exception;
-	public void addCommand(List<CommandPiece<?>> pattern, Command command) throws Exception;
-	public void addCommand(CommandMetaData metaData, Command command) throws Exception;
-	public void removeCommand(Command command) throws Exception;
+	public void addCommand(List<CommandPiece<?>> pattern, Command command);
+	public void addCommand(CommandMetaData metaData, Command command);
+	public void removeCommand(Command command);
 	public List<String> getCommandPieceSuggestions(String commandPieceStart,List<String> otherCommandPieces,CommandSender sender);
+	public List<CommandPiece<?>> getCommandPattern(Command command);
 }

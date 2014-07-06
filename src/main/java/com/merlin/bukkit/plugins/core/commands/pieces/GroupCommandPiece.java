@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import com.merlin.bukkit.plugins.core.collections.GroupAction;
 import com.merlin.bukkit.plugins.core.collections.factory.StaticCollectionFactory;
 import com.merlin.bukkit.plugins.core.commands.hooks.GroupActionHook;
+import com.merlin.bukkit.plugins.core.commands.hooks.Hook;
 
 public class GroupCommandPiece extends MappedValueCommandPiece<GroupAction> {
 
@@ -21,20 +22,19 @@ public class GroupCommandPiece extends MappedValueCommandPiece<GroupAction> {
 		this(new GroupActionHook());
 	}
 
-	public GroupCommandPiece(GroupActionHook groupHook) {
+	public GroupCommandPiece(Hook<GroupAction> groupHook) {
 		super(getDefaultGroupActions(),ChatColor.YELLOW,5,groupHook,new StaticCollectionFactory<String>("add","remove"));
-	}
-	@Override
-	public String getDisplay() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public static GroupCommandPiece group() {
 		return new GroupCommandPiece();
 	}
 	
-	public static GroupCommandPiece group(GroupActionHook groupHook) {
+	public static GroupCommandPiece group(Hook<GroupAction> groupHook) {
 		return new GroupCommandPiece(groupHook);
+	}
+	@Override
+	public String getDisplay() {
+		return this.chatColor+"(add/remove)";
 	}
 }

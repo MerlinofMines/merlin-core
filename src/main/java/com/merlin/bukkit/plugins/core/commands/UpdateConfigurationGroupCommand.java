@@ -22,8 +22,9 @@ public class UpdateConfigurationGroupCommand extends PluginConfigurationCommand 
 	@Override
 	public boolean execute(CommandSender sender) {
 
+		Set<String> keys = getConfiguration().getConfigurationSection(propertyPath.getPath()).getKeys(false);
+
 		if(groupHook.getValue().equals(GroupAction.ADD)) {
-			Set<String> keys = getConfiguration().getConfigurationSection(propertyPath.getPath()).getKeys(false);
 			if(keys.contains(persistable.getPersistableRepresentation().toString())) {
 				sender.sendMessage("This value is already present in the list.");
 				return false;
@@ -33,11 +34,15 @@ public class UpdateConfigurationGroupCommand extends PluginConfigurationCommand 
 				} else {
 					getConfiguration().getConfigurationSection(propertyPath.getPath()).createSection(persistable.getPersistableRepresentation().toString());
 				}
-				
 			}
 		} else if(groupHook.getValue().equals(GroupAction.REMOVE)){
-			
-		}
+			if(!keys.contains(persistable.getPersistableRepresentation().toString())) {
+				sender.sendMessage("This value does not exist in the list");
+				return false;
+			} else {
+				getConfiguration().getConfigurationSection(propertyPath.getPath()).set(persistable.getPersistableRepresentation().toString(),null);
+			}
+		}//Currently no other actions
 		
 		plugin.saveConfig();
 		return true;
@@ -52,4 +57,14 @@ public class UpdateConfigurationGroupCommand extends PluginConfigurationCommand 
 		this.persistable = persistable;
 		this.defaults = defaults;
 	}
+
+	public Hook<GroupAction> getGroupHook() {
+		return groupHook;
+	}
+
+	public void setGroupHook(Hook<GroupAction> groupHook) {
+		this.groupHook = groupHook;
+	}
+	
+	
 }
