@@ -21,7 +21,7 @@ public abstract class Command {
 	}
 
 	public void setSuccessMessage(String successMessage) {
-		simple(successMessage);
+		this.successMessage = simple(successMessage);
 	}
 
 	public String getPermission() {

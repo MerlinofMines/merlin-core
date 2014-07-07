@@ -18,6 +18,6 @@ public class AffirmationHook extends PersistableHook<Boolean> {
 	@Override
 	public Object getPersistableRepresentation() {
 		if(getValue()==null)return Boolean.FALSE;
-		else return getValue();
-	}
+			else return Boolean.valueOf(getValue());
+		}
 }
